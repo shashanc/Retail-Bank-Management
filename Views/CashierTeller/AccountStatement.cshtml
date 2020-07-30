@@ -1,0 +1,72 @@
+﻿@{ 
+    ViewData["Title"] = "Account Statement";
+    int i = 1;
+}
+@model AccountStatementViewModel
+<h1 style="width: 400px;" class="text-center p-2 mx-auto">Account Statement</h1>
+<hr class="w-50">
+<form method="post" style="width: 700px;" class="mx-auto text-center">
+    <div class="mx-auto w-50 input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Accounts</label>
+        </div>
+        <select asp-for="AccountID" class="custom-select" id="inputGroupSelect01">
+
+            @foreach (var item in ViewBag.Accounts)
+            {
+                <option value="@item.AccountID">@item.AccountID</option>
+            }
+
+        </select>
+    </div>
+    <div class="input-group mx-auto" style="width: 700px;">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="radio" asp-for="ByDate" value="true">
+            </div>
+        </div>
+        <p class="form-control">Date</p>
+        <p class="text-center form-control">Start date</p>
+        <input asp-for="StartDate" type="date">
+        <p class="text-center form-control">End date</p>
+        <input asp-for="EndDate" type="date">
+    </div>
+
+    <div class="input-group w-50 mt-3 mx-auto">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input asp-for="ByDate" value="false" type="radio">
+            </div>
+        </div>
+        <input asp-for="NumberOfTransactions" class="form-control" placeholder="Enter number of transactions">
+    </div>
+    <button type="submit" class="btn form-control btn-primary m-1" style="width:75px;">Submit</button>
+</form>
+
+
+@if (Model != null && Model.Transactions.Count() > 0)
+{
+    <table class="text-center table table-sm mx-auto table-striped table-bordered" style="width: 500px;">
+        <thead class="bg-primary text-white">
+            <tr class="">
+                <th scope="col">#</th>
+                <th scope="col">Transaction ID</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Transactions)
+            {
+                <tr>
+                    <th scope="row">@i</th>@{ i++; }
+                    <td>@item.TransactionID</td>
+                    <td>@item.Description</td>
+                    <td>@item.TransactionDate.ToString("d")</td>
+                    <td>@item.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

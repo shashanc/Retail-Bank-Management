@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Account Status";
+    int i = 0;
+}
+@model IEnumerable<Account>
+<h4 class="text-center panel panel-default m-5 p-3 w-50 mx-auto">All Accounts Status</h4>
+<hr>
+<table style="margin: auto;" class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Customer ID</th>
+            <th scope="col">Account ID</th>
+            <th scope="col">Account Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">Balance</th>
+            <th scope="col">Message</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Refresh</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        i++;
+        <tbody>
+            <tr>
+                <th scope="row">@i</th>
+                <td>@item.CustomerID</td>
+                <td>@item.AccountID</td>
+                <td>@item.AccountType</td>
+                <td>@item.Status</td>
+                <td>@item.Balance</td>
+                <td>@item.Message</td>
+                <td>@item.LastUpdated.ToString()</td>
+                <td><button type="button" class="btn btn-outline-primary btn-sm">Refresh</button></td>
+            </tr>
+        </tbody>
+    }
+
+</table>

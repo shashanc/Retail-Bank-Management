@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Update Customer";
+}
+@model Customer
+<form asp-action="Update" asp-controller="CustomerExecutive" method="get" class="form-inline ml-auto d-flex justify-content-center">
+    <div class="md-form my-0 m-2">
+        <input name="SearchString" class="form-control" type="text" placeholder="SSN ID or Customer ID" aria-label="Search">
+    </div>
+    <button class="btn-sm btn-primary btn btn-outline-white btn-md my-0 ml-sm-2" type="submit">Search Customer</button>
+</form>
+@if (Model != null)
+{   @if(ViewData["success"] as string == "true") {
+    <div class="alert alert-success container w-50" alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> Customer Updated
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>} 
+    else if(ViewData["success"] as string == "false")
+    {
+<div class="alert alert-danger container w-50" alert-dismissible fade show" role="alert">
+    <strong>Failed!</strong> Some Error Occurred
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+    }
+    <form asp-controller="CustomerExecutive" asp-action="Update" method="post" style="margin-top: 10px; " class="container w-75 text-center d-flex justify-content-center ">
+        <div class="card w-75 p-3">
+            <h5 class="card-header text-left">Customer Details</h5>
+            <input hidden asp-for="City" value="@Model.City"/>
+            <input hidden asp-for="State" value="@Model.State"/>
+            <div class="card-body">
+                <div class="form-group text-left">
+                    <label class="badge">SSN ID</label>
+                    <input asp-for="SSNID" class="mb-2 form-control" placeholder="Name" value="@Model.SSNID" readonly>
+                    <label class="badge">Customer ID</label>
+                    <input asp-for="CustomerID" class="form-control" placeholder="Name" value="@Model.CustomerID" readonly>
+                </div>
+                <div class="form-group text-left">
+                    <label asp-for="Name" class="badge">Customer Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Name" value="@Model.Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group text-left">
+                    <label asp-for="Age" class="badge" for="inputZip">Age</label>
+                    <input asp-for="Age" value="@Model.Age" class="form-control">
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+                <div class="form-group text-left">
+                    <label asp-for="Address" class="badge">Address</label>
+                    <input asp-for="Address" value="@Model.Address" class="form-control" placeholder="1234 Main St">
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group text-left">
+                    <label asp-for="Address2" class="badge">Address 2</label>
+                    <input asp-for="Address2" value="@Model.Address2" class="form-control" placeholder="Apartment, studio, or floor">
+                </div>
+                <button class="btn btn-primary" type="submit">Update Customer</button>
+            </div>
+        </div>
+    </form> }
+else
+{
+    <h4 class="display-4 text-center">Customer Details will be displayed here</h4>
+}

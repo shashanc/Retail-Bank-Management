@@ -1,0 +1,180 @@
+﻿@{
+    ViewData["Title"] = "Deposit";
+}
+@model Account
+<style>
+    body {
+        color: #fff;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .form-control, .form-control:focus, .input-group-addon {
+        border-color: #e1e1e1;
+    }
+
+    .form-control, .btn {
+        border-radius: 3px;
+    }
+
+    .signup-form {
+        width: 390px;
+        margin: 0 auto;
+        padding: 30px 0;
+    }
+
+        .signup-form form {
+            color: #999;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        .signup-form h2 {
+            color: #333;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .signup-form hr {
+            margin: 0 -30px 20px;
+        }
+
+        .signup-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .signup-form label {
+            font-weight: normal;
+            font-size: 13px;
+        }
+
+        .signup-form .form-control {
+            min-height: 38px;
+            box-shadow: none !important;
+        }
+
+        .signup-form .input-group-addon {
+            max-width: 42px;
+            text-align: center;
+        }
+
+        .signup-form input[type="checkbox"] {
+            margin-top: 2px;
+        }
+
+        .signup-form .btn {
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+        }
+
+            .signup-form .btn:hover, .signup-form .btn:focus {
+                outline: none;
+            }
+
+        .signup-form a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+            .signup-form a:hover {
+                text-decoration: none;
+            }
+
+        .signup-form form a {
+            color: #19aa8d;
+            text-decoration: none;
+        }
+
+            .signup-form form a:hover {
+                text-decoration: underline;
+            }
+
+        .signup-form .fa {
+            font-size: 21px;
+        }
+
+        .signup-form .fa-paper-plane {
+            font-size: 18px;
+        }
+
+        .signup-form .fa-check {
+            color: #fff;
+            left: 17px;
+            top: 18px;
+            font-size: 7px;
+            position: absolute;
+        }
+</style>
+
+@if (Model == null)
+{
+    <div class="alert alert-warning alert-dismissible fade show w-25 mx-auto" role="alert">
+        <strong>No Accounts Found!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (ViewData["Success"] as string == "True")
+{
+    <div class="alert alert-success alert-dismissible fade show w-25 mx-auto" role="alert">
+        <strong>Amount Deposited!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<form asp-action="Deposit" method="get" class="input-group mb-3 mx-auto w-25">
+    <input name="id" type="text" class="form-control" placeholder="Enter your Account ID" aria-label="Text input with dropdown button">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+@if (Model != null)
+{
+    <div class="signup-form">
+        <form asp-action="Deposit" method="post">
+            <h2>Account Details</h2>
+            <h4>Deposit to -</h4>
+            <hr>
+            <div class="form-group">
+                <div class="input-group">
+                    <input value="@Model.CustomerID" type="text" class="form-control" placeholder="Customer ID" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input name="AccountID" value="@Model.AccountID" type="text" class="form-control" placeholder="Account ID" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input value="@Model.AccountType" type="text" class="form-control" placeholder="Account Type" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                @if (ViewData["Success"] as string == "True")
+                {
+                    <span class="badge badge-success">Latest balance</span>
+                }
+                <div class="input-group">
+                    <input value="@Model.Balance" type="text" class="form-control" placeholder="Balance" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input name="Amount" type="text" class="form-control" placeholder="Enter Amount">
+                </div>
+            </div>
+            <div class="input-group-append">
+                <div class="form-group mx-auto">
+                    <button type="submit" class="btn btn-primary">Deposit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+

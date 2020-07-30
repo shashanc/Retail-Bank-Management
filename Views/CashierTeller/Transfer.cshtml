@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "Transfer";
+}
+@model TransferViewModel
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .form-control, .form-control:focus, .input-group-addon {
+        border-color: #e1e1e1;
+    }
+
+    .form-control, .btn {
+        border-radius: 3px;
+    }
+
+    .signup-form {
+        width: 390px;
+        margin: 0 auto;
+        padding: 30px 0;
+    }
+
+        .signup-form form {
+            color: #999;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        .signup-form h2 {
+            color: #333;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .signup-form hr {
+            margin: 0 -30px 20px;
+        }
+
+        .signup-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .signup-form label {
+            font-weight: normal;
+            font-size: 13px;
+        }
+
+        .signup-form .form-control {
+            min-height: 38px;
+            box-shadow: none !important;
+        }
+
+        .signup-form .input-group-addon {
+            max-width: 42px;
+            text-align: center;
+        }
+
+        .signup-form input[type="checkbox"] {
+            margin-top: 2px;
+        }
+
+        .signup-form .btn {
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+        }
+
+            .signup-form .btn:hover, .signup-form .btn:focus {
+                outline: none;
+            }
+
+        .signup-form a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+            .signup-form a:hover {
+                text-decoration: none;
+            }
+
+        .signup-form form a {
+            color: #19aa8d;
+            text-decoration: none;
+        }
+
+            .signup-form form a:hover {
+                text-decoration: underline;
+            }
+
+        .signup-form .fa {
+            font-size: 21px;
+        }
+
+        .signup-form .fa-paper-plane {
+            font-size: 18px;
+        }
+
+        .signup-form .fa-check {
+            color: #fff;
+            left: 17px;
+            top: 18px;
+            font-size: 7px;
+            position: absolute;
+        }
+</style>
+
+@if (ViewData["AccountFound"] as string == "false")
+{
+    <div class="alert alert-warning alert-dismissible fade show w-25 mx-auto" role="alert">
+        <strong>No Accounts Found!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@if (ViewData["Transfer"] as string == "false")
+{
+    <div class="alert alert-danger alert-dismissible fade show w-25 mx-auto" role="alert">
+        <strong>Transfer Failed!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<form method="get" asp-action="Transfer" class="input-group mb-3 mx-auto w-25">
+    <input asp-for="ToAccount" value="200000000" hidden />
+    <input asp-for="Amount" value="12" hidden />
+    <input asp-for="FromAccount" class="form-control" placeholder="Enter your Account ID">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<div class="mx-auto w-25">
+    <span asp-validation-for="FromAccount" class="text-danger"></span>
+</div>
+
+@if ( Model != null )
+{
+    <div class="signup-form">
+        <form method="post" asp-action="Transfer">
+            <input name="i" value="0" hidden />
+            <h2>Account Details</h2>
+            <h4>Transfer Money </h4>
+            <hr>
+            <div class="form-group">
+                <p>From Account</p>
+                <div class="input-group">
+                    <input asp-for="FromAccount" class="form-control" placeholder="Account no." readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <p>To Beneficiary Account</p>
+                @if (ViewData["toAccountFound"] as string == "false")
+                {
+                    <span class="text-danger">Beneficiary account not found!</span>
+                }
+                <div class="input-group">
+                    <input asp-for="ToAccount" value="" class="form-control" placeholder="Account no.">
+                </div>
+                <span asp-validation-for="ToAccount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (ViewData["Transfer"] as string == "false")
+                {
+                    <span class="text-danger">Insufficient Balance!</span>
+                }
+                <div class="input-group">
+                    <input asp-for="Amount" value="" class="form-control" placeholder="Enter Amount">
+                </div>
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="input-group-append">
+                <div class="form-group mx-auto">
+                    <button type="submit" class="btn btn-primary">Transfer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
