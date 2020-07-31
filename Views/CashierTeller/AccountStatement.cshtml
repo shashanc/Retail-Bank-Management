@@ -46,7 +46,7 @@
 
 @if (Model != null && Model.Transactions.Count() > 0)
 {
-    <table class="text-center table table-sm mx-auto table-striped table-bordered" style="width: 500px;">
+    <div id="pdfContainer"><table class="text-center table table-sm mx-auto table-striped table-bordered" style="width: 500px;">
         <thead class="bg-primary text-white">
             <tr class="">
                 <th scope="col">#</th>
@@ -68,5 +68,17 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </table></div>
+
+    <form method="post" asp-action="CreatePdf" class="mx-auto w-25 text-center">
+        <input asp-for="AccountID" value="@Model.AccountID" hidden />
+        <input asp-for="ByDate" value="@Model.ByDate" hidden />
+        <input asp-for="StartDate" value="@Model.StartDate" hidden>
+        <input asp-for="EndDate" value="@Model.EndDate" hidden >
+        <input asp-for="NumberOfTransactions" value="@Model.NumberOfTransactions" hidden/>
+        <button id="btnPdf" type="submit" class="btn btn-dark">
+            Download
+        </button>
+    </form>
+    
 }

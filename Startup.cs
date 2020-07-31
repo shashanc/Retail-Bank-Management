@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Retail_Bank_Management.Models;
 
+
 namespace Retail_Bank_Management
 {
     public class Startup
@@ -35,6 +36,7 @@ namespace Retail_Bank_Management
             services.AddControllersWithViews();
             services.AddScoped<ICustomerRepository, SQLCustomerRepository>();
             services.AddScoped<IAccountRepository, SQLAccountRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

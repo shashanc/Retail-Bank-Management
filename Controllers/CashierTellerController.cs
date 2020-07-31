@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Retail_Bank_Management.Models;
+using SelectPdf;
 
 namespace Retail_Bank_Management.Controllers
 {
@@ -13,11 +17,13 @@ namespace Retail_Bank_Management.Controllers
     {
         private ICustomerRepository _customerRepository;
         private IAccountRepository _accountRepository;
+        
 
         public CashierTellerController(ICustomerRepository customerRepository, IAccountRepository accountRepository)
         {
             _customerRepository = customerRepository;
             _accountRepository = accountRepository;
+      
         }
         
         public IActionResult Index()
@@ -184,5 +190,41 @@ namespace Retail_Bank_Management.Controllers
             ViewBag.Accounts = accounts;
             return View(model);
         }
+
+        public IActionResult CreatePdf(AccountStatementViewModel model)
+        {
+            List<Transaction> trans = null;
+            if (model.ByDate)
+            {
+                trans = _accountRepository.GetTransactionsByDate(model).ToList();
+            }
+            else
+            {
+                trans = _accountRepository.GetTransactionsByNumber(model).ToList();
+            }
+            model.Transactions = trans;
+           
+            StringBuilder str = new StringBuilder("<html><head><style>h1{text-align: center; color: rgb(49, 146, 202); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;} table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 8px; } tr:nth-child(even){background-color: #f2f2f2} th { background-color: #4CAF50; color: white; }</style></head><body><h1>Xplore Bank Statement</h1><table><thead><tr><th>#</th><th>Transaction ID</th><th>Description</th><th>Date</th><th>Amount</th></tr></thead><tbody>");
+            for(int i=0; i<trans.Count(); i++)
+            {
+                str.Append("<tr><th>"+i+"</th>");
+                str.Append("<td>" + model.Transactions[i].TransactionID + "</td>");
+                str.Append("<td>" + model.Transactions[i].Description + "</td>");
+                str.Append("<td>" + model.Transactions[i].TransactionDate + "</td>");
+                str.Append("<td>" + model.Transactions[i].Amount + "</td></tr>");
+            }
+            str.Append("</tbody></table></body></html>");
+            
+
+            //html = html.Replace("StrTag", "<").Replace("EndTag", ">");
+            HtmlToPdf oHtmlToPdf = new HtmlToPdf();
+            PdfDocument oPdfDocument = oHtmlToPdf.ConvertHtmlString(str.ToString());
+            byte[] pdf = oPdfDocument.Save();
+            oPdfDocument.Close();
+            return File(pdf, "application/pdf", "Statement.pdf");
+            
+            
+        }
+
     }
 }
